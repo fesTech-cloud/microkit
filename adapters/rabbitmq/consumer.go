@@ -8,7 +8,7 @@ import (
 	"github.com/rabbitmq/amqp091-go"
 )
 
-const (
+var (
 	maxRetries = 3
 	retryDelay = 5000 // milliseconds
 )
@@ -128,7 +128,7 @@ func (c *Consumer) setupRetryQueue(topic string) error {
 }
 
 func (c *Consumer) setupMainQueue(topic, dlx string) (amqp091.Queue, error) {
-	return c.ch.QueueDeclare(
+	queue, err := c.ch.QueueDeclare(
 		topic,
 		true,
 		false,
@@ -139,6 +139,23 @@ func (c *Consumer) setupMainQueue(topic, dlx string) (amqp091.Queue, error) {
 			"x-dead-letter-routing-key": topic,
 		},
 	)
+
+	if err != nil {
+		return amqp091.Queue{}, err
+	}
+
+	err = c.ch.QueueBind(
+		queue.Name,
+		topic,
+		"amq.topic",
+		false,
+		nil,
+	)
+	if err != nil {
+		return amqp091.Queue{}, err
+	}
+
+	return queue, nil
 }
 
 func (c *Consumer) consume(queue amqp091.Queue) (<-chan amqp091.Delivery, error) {
