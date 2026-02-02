@@ -14,7 +14,7 @@ type Producer struct {
 }
 
 func NewProducer(conn *Connection, cfg messaging.Config) (*Producer, error) {
-	ch, err := conn.conn.Channel()
+	ch, err := conn.GetConnection().Channel()
 	if err != nil {
 		return nil, err
 	}
