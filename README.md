@@ -1,2 +1,2 @@
 # microkit
-A Go toolkit that reduces microservice boilerplate by standardizing how services interact with infrastructure such as messaging systems, network calls, and shared service utilities.
+microkit is an open-source Go toolkit that helps developers build reliable microservices by abstracting common infrastructure concerns like messaging, networking, retries, and service communication.
