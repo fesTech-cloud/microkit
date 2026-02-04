@@ -25,10 +25,13 @@ It’s a toolkit you can adopt incrementally.
 
 - Messaging abstractions
 - RabbitMQ adapter (v0.1)
+- Kafka adapter (v0.1)
 
 ---
 
-## Example (RabbitMQ)
+## Examples
+
+### RabbitMQ
 
 ```go
 producer, _ := rabbitmq.NewProducer(
@@ -38,4 +41,13 @@ producer, _ := rabbitmq.NewProducer(
 producer.Publish(ctx, "orders.created", messaging.Message{
     Payload: []byte(`{"id":"123"}`),
 })
+```
+
+### Kafka
+
+```go
+conn := kafka.NewConnection([]string{"localhost:9092"})
+producer := kafka.NewProducer(conn, "orders")
+
+producer.Publish(ctx, []byte("key"), []byte(`{"id":"123"}`))
 ```
