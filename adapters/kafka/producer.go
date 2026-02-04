@@ -21,7 +21,7 @@ func NewProducer(conn *Connection, topic string) *Producer {
 	}
 }
 
-func (p *Producer) Publish(ctx context.Context, message []byte, key []byte) error {
+func (p *Producer) Publish(ctx context.Context, key []byte, message []byte) error {
 	msg := kafka.Message{
 		Key:   key,
 		Value: message,
