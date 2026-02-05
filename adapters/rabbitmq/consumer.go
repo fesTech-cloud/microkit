@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/festech-cloud/microkit/messaging"
+	"github.com/festus/microkit/messaging"
 	"github.com/rabbitmq/amqp091-go"
 )
 

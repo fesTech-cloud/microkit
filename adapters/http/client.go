@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/festech-cloud/microkit/network"
-	"github.com/festech-cloud/microkit/internal/retry"
+	"github.com/festus/microkit/network"
+	"github.com/festus/microkit/internal/retry"
 )
 
 type Client struct {

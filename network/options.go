@@ -3,7 +3,7 @@ package network
 import (
 	"time"
 
-	"github.com/festech-cloud/microkit/internal/retry"
+	"github.com/festus/microkit/internal/retry"
 )
 
 // Option configures network requests.

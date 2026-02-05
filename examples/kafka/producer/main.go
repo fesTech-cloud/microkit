@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/festech-cloud/microkit/adapters/kafka"
+	"github.com/festus/microkit/adapters/kafka"
 )
 
 func main() {

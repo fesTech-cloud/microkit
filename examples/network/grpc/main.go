@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/festech-cloud/microkit/adapters/grpc"
+	"github.com/festus/microkit/adapters/grpc"
 )
 
 func main() {
