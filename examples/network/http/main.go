@@ -6,8 +6,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/festech-cloud/microkit/adapters/http"
-	"github.com/festech-cloud/microkit/network"
+	"github.com/festus/microkit/adapters/http"
+	"github.com/festus/microkit/network"
 )
 
 func main() {

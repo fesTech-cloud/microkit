@@ -1,5 +1,9 @@
 # microkit
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/festus/microkit.svg)](https://pkg.go.dev/github.com/festus/microkit)
+[![Go Report Card](https://goreportcard.com/badge/github.com/festus/microkit)](https://goreportcard.com/report/github.com/festus/microkit)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 An opinionated Go toolkit that simplifies building microservices by providing clean abstractions over common infrastructure tools like messaging, networking, and service communication.
 
 ---
@@ -18,6 +22,89 @@ Building microservices in Go often means rewriting the same infrastructure code:
 
 This is not a framework.
 It’s a toolkit you can adopt incrementally.
+
+---
+
+## Getting Started
+
+### Installation
+
+```bash
+go get github.com/festus/microkit
+```
+
+### Quick Start
+
+#### HTTP Client with Retry
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "time"
+    
+    "github.com/festus/microkit/adapters/http"
+    "github.com/festus/microkit/network"
+)
+
+func main() {
+    client := http.NewClient(10 * time.Second)
+    defer client.Close()
+    
+    resp, err := client.Get(context.Background(), "https://api.example.com",
+        network.WithHeader("Authorization", "Bearer token"),
+        network.WithRetry(3, 100*time.Millisecond, 2*time.Second, 2.0),
+    )
+    if err != nil {
+        panic(err)
+    }
+    
+    fmt.Printf("Response: %d\n", resp.StatusCode)
+}
+```
+
+#### Kafka Consumer with Retry/DLQ
+
+```go
+package main
+
+import (
+    "context"
+    "fmt"
+    "time"
+    
+    "github.com/festus/microkit/adapters/kafka"
+    "github.com/festus/microkit/internal/retry"
+)
+
+func main() {
+    conn := kafka.NewConnection([]string{"localhost:9092"})
+    
+    config := kafka.ConsumerConfig{
+        RetryConfig: retry.Config{
+            MaxAttempts:  3,
+            InitialDelay: 100 * time.Millisecond,
+            MaxDelay:     2 * time.Second,
+            Multiplier:   2.0,
+        },
+        EnableDLQ: true,
+        DLQTopic:  "orders-dlq",
+    }
+    
+    consumer := kafka.NewConsumerWithConfig(conn, "orders", "order-service", config)
+    defer consumer.Close()
+    
+    consumer.Subscribe(context.Background(), func(msg []byte) error {
+        fmt.Printf("Processing: %s\n", string(msg))
+        // Your business logic here
+        return nil
+    })
+    
+    select {} // Keep running
+}
+```
 
 ---
 

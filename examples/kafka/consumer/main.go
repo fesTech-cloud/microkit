@@ -7,8 +7,8 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/festech-cloud/microkit/adapters/kafka"
-	"github.com/festech-cloud/microkit/internal/retry"
+	"github.com/festus/microkit/adapters/kafka"
+	"github.com/festus/microkit/internal/retry"
 )
 
 func main() {

@@ -6,7 +6,7 @@ import (
 	"log"
 
 	kafka "github.com/segmentio/kafka-go"
-	"github.com/festech-cloud/microkit/internal/retry"
+	"github.com/festus/microkit/internal/retry"
 )
 
 type ConsumerConfig struct {

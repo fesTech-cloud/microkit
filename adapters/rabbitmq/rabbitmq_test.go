@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/festech-cloud/microkit/messaging"
+	"github.com/festus/microkit/messaging"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 )

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/festech-cloud/microkit/adapters/rabbitmq"
-	"github.com/festech-cloud/microkit/messaging"
+	"github.com/festus/microkit/adapters/rabbitmq"
+	"github.com/festus/microkit/messaging"
 )
 
 func main() {
