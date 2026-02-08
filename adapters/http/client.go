@@ -44,7 +44,7 @@ func (c *Client) Delete(ctx context.Context, url string, opts ...network.Option)
 }
 
 func (c *Client) Call(ctx context.Context, method string, req interface{}, resp interface{}, opts ...network.Option) error {
-	panic("gRPC not supported by HTTP client")
+	return network.ErrUnsupportedOperation
 }
 
 func (c *Client) do(ctx context.Context, method, url string, body []byte, opts ...network.Option) (*network.Response, error) {
@@ -58,7 +58,18 @@ func (c *Client) do(ctx context.Context, method, url string, body []byte, opts .
 		err := retry.Execute(ctx, *config.RetryConfig, func() error {
 			var err error
 			resp, err = c.doRequest(ctx, method, url, body, config)
-			return err
+			if err != nil {
+				return err
+			}
+			// Retry on specific status codes if configured
+			if len(config.RetryStatusCodes) > 0 {
+				for _, code := range config.RetryStatusCodes {
+					if resp.StatusCode == code {
+						return retry.ErrRetryableStatus
+					}
+				}
+			}
+			return nil
 		})
 		return resp, err
 	}

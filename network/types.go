@@ -1,5 +1,7 @@
 package network
 
+import "errors"
+
 // Response represents a network response.
 type Response struct {
 	StatusCode int
@@ -14,3 +16,8 @@ type Request struct {
 	Headers map[string]string
 	Body    []byte
 }
+
+// Common errors
+var (
+	ErrUnsupportedOperation = errors.New("operation not supported by this client")
+)
