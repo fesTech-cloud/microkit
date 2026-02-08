@@ -45,12 +45,12 @@ import (
     "fmt"
     "time"
     
-    "github.com/festus/microkit/adapters/http"
+    microhttp "github.com/festus/microkit/adapters/http"
     "github.com/festus/microkit/network"
 )
 
 func main() {
-    client := http.NewClient(10 * time.Second)
+    client := microhttp.NewClient(10 * time.Second)
     defer client.Close()
     
     resp, err := client.Get(context.Background(), "https://api.example.com",
@@ -145,12 +145,21 @@ producer.Publish(ctx, []byte("key"), []byte(`{"id":"123"}`))
 ### HTTP Client with Retry
 
 ```go
-client := http.NewClient(10 * time.Second)
+client := microhttp.NewClient(10 * time.Second)
 defer client.Close()
 
 resp, _ := client.Get(ctx, "https://api.example.com/users",
     network.WithHeader("Authorization", "Bearer token"),
     network.WithRetry(3, 100*time.Millisecond, 2*time.Second, 2.0),
+)
+```
+
+### HTTP Client with Status Code Retry
+
+```go
+// Retry on 429 (rate limit) and 503 (service unavailable)
+resp, _ := client.Get(ctx, "https://api.example.com/users",
+    network.WithRetryOnStatus(3, 100*time.Millisecond, 2*time.Second, 2.0, 429, 503),
 )
 ```
 
